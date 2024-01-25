@@ -1,18 +1,14 @@
 -- -*- lua -*-
--- Module file created by spack (https://github.com/spack/spack) on 2024-01-24 12:29:14.591974
---
--- apple-clang@15.0.0%apple-clang@15.0.0 build_system=bundle arch=darwin-ventura-m1/qff2gey
---
 
 whatis([[Name : apple-clang]])
 whatis([[Version : 15.0.0]])
-whatis([[Target : m1]])
+whatis([[Target : m2]])
 whatis([[Short description : Apple's Clang compiler]])
 whatis([[Configure options : unknown, software installed outside of Spack]])
 
 help([[Name   : apple-clang]])
 help([[Version: 15.0.0]])
-help([[Target : m1]])
+help([[Target : m2]])
 help()
 help([[Apple's Clang compiler]])
 
@@ -20,7 +16,7 @@ help([[Apple's Clang compiler]])
 family("compiler")
 
 -- Loading this module unlocks the path below unconditionally
-prepend_path("MODULEPATH", "/Users/mathomp4/spack/share/spack/lmod/darwin-ventura-aarch64/Core")
+prepend_path("MODULEPATH", "/Users/mathomp4/spack/share/spack/lmod/darwin-sonoma-aarch64/Core")
 
 -- set the compiler environment variables
 setenv("CC","/usr/bin/clang")
