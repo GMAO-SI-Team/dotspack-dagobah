@@ -66,7 +66,7 @@ brew install qt@5
 brew install mysql
 ```
 
-## Spack
+## Spack Configuration
 
 ### config
 
@@ -214,4 +214,114 @@ modules:
     - LD_LIBRARY_PATH
 ```
 
+#### Extra apple-clang module
 
+Spack is not able to create a modulefile for apple-clang since it is a
+builtin compiler or something. But, we want to have a modulefile for it
+so we can have `FC`, `CC` etc. set in the environment. So we make one. There
+is a copy in the `extra_modulefiles` directory. Copy it to the right place:
+
+```bash
+cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core/
+```
+
+## Spack Install
+
+Now we install packages.
+
+```bash
+spack install python py-numpy py-pyyaml py-ruamel-yaml
+spack install openmpi
+spack install esmf
+spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
+```
+
+### HDF5 Issue
+
+Note that HDF5 has a build issue with apple-clang 15. There is a PR in place:
+
+https://github.com/spack/spack/pull/42264
+
+but until this is merged into develop, you'll need to edit the code yourself. Run
+`spack edit hdf5` and edit per this diff:
+```diff
+diff --git a/var/spack/repos/builtin/packages/hdf5/package.py b/var/spack/repos/builtin/packages/hdf5/package.py
+index 1f19db8dbb..be49216e18 100644
+--- a/var/spack/repos/builtin/packages/hdf5/package.py
++++ b/var/spack/repos/builtin/packages/hdf5/package.py
+@@ -293,9 +293,13 @@ def flag_handler(self, name, flags):
+                 cmake_flags.append(self.compiler.cc_pic_flag)
+             if spec.satisfies("@1.8.21 %oneapi@2023.0.0"):
+                 cmake_flags.append("-Wno-error=int-conversion")
++            if spec.satisfies("%apple-clang@15:"):
++                cmake_flags.append("-Wl,-ld_classic")
+         elif name == "cxxflags":
+             if spec.satisfies("@:1.8.12+cxx~shared"):
+                 cmake_flags.append(self.compiler.cxx_pic_flag)
++            if spec.satisfies("%apple-clang@15:"):
++                cmake_flags.append("-Wl,-ld_classic")
+         elif name == "fflags":
+             if spec.satisfies("%cce+fortran"):
+                 # Cray compiler generates module files with uppercase names by
+```
+
+## Building GEOS and MAPL
+
+### Loading modules
+
+If you are using the module way of loading spack, you need to do:
+
+```bash
+module load apple-clang openmpi esmf python py-pyyaml pfunit pflogger fargparse zlib-ng
+```
+
+This might be too much, but it works.
+
+### spack load
+
+If you do `spack load` you need to do:
+
+```bash
+spack load openmpi esmf python py-pyyaml pfunit pflogger fargparse zlib-ng
+```
+but now whenever you run CMake, you need to tell it where to find the
+compilers:
+```bash
+cmake ... -DCMAKE_Fortran_COMPILER=gfortran-12 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+```
+
+### MAPL
+
+No changes were needed for MAPL
+
+### GEOS
+
+#### Building
+
+To build GEOS a fix is currently needed in `GEOSgcm_GridComp`, see
+
+https://github.com/GEOS-ESM/GEOSgcm_GridComp/pull/888
+
+==> Now in `develop`
+
+#### Running
+
+You'll need to update the `gcm_run.j` to not use `g5_modules` and instead use the spack modules.
+
+So comment out:
+
+```csh
+#source $GEOSBIN/g5_modules
+#setenv DYLD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${BASEDIR}/${ARCH}/lib:${GEOSDIR}/lib
+```
+and add:
+
+```csh
+source $LMOD_PKG/init/csh
+module use -a $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core
+module load apple-clang openmpi esmf python py-pyyaml pfunit pflogger fargparse zlib-ng
+module list
+```
+
+Note that `LMOD_PKG` seems to be defined by the brew lmod installation...though not sure.
+You might just need to put in a full path or something.
