@@ -7,7 +7,7 @@ compilers:
       f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
       fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
     flags: {}
-    operating_system: ventura
+    operating_system: sonoma
     target: aarch64
     modules: []
     environment: {}
@@ -20,7 +20,7 @@ compilers:
       f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
       fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
     flags: {}
-    operating_system: ventura
+    operating_system: sonoma
     target: aarch64
     modules: []
     environment: {}
@@ -33,7 +33,7 @@ compilers:
       f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
       fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
     flags: {}
-    operating_system: ventura
+    operating_system: sonoma
     target: aarch64
     modules: []
     environment: {}
