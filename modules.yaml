@@ -1,0 +1,27 @@
+modules:
+  default:
+    'enable:':
+    - lmod
+    lmod:
+      core_compilers:
+      - apple-clang@15.0.0
+      hierarchy:
+      - mpi
+      hash_length: 0
+      include:
+      - apple-clang
+      all:
+        suffixes:
+          +debug: 'debug'
+          build_type=Debug: 'debug'
+      hdf5:
+        suffixes:
+          ~shared: 'static'
+      esmf:
+        suffixes:
+          ~shared: 'static'
+          esmf_pio=OFF: 'nopio'
+  prefix_inspections:
+    lib64: [LD_LIBRARY_PATH]
+    lib:
+    - LD_LIBRARY_PATH
