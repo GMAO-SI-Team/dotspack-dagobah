@@ -272,7 +272,7 @@ index 1f19db8dbb..be49216e18 100644
 If you are using the module way of loading spack, you need to do:
 
 ```bash
-module load apple-clang openmpi esmf python py-pyyaml pfunit pflogger fargparse zlib-ng
+module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 ```
 
 This might be too much, but it works.
@@ -282,7 +282,7 @@ This might be too much, but it works.
 If you do `spack load` you need to do:
 
 ```bash
-spack load openmpi esmf python py-pyyaml pfunit pflogger fargparse zlib-ng
+spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 ```
 but now whenever you run CMake, you need to tell it where to find the
 compilers:
@@ -304,6 +304,8 @@ https://github.com/GEOS-ESM/GEOSgcm_GridComp/pull/888
 
 ==> Now in `develop`
 
+Remember also to add all the CMake compiler strings if using `spack load`
+
 #### Running
 
 You'll need to update the `gcm_run.j` to not use `g5_modules` and instead use the spack modules.
@@ -319,8 +321,9 @@ and add:
 ```csh
 source $LMOD_PKG/init/csh
 module use -a $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core
-module load apple-clang openmpi esmf python py-pyyaml pfunit pflogger fargparse zlib-ng
+module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 module list
+setenv DYLD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${GEOSDIR}/lib
 ```
 
 Note that `LMOD_PKG` seems to be defined by the brew lmod installation...though not sure.
