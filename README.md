@@ -236,35 +236,6 @@ spack install esmf
 spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
 ```
 
-### HDF5 Issue
-
-Note that HDF5 has a build issue with apple-clang 15. There is a PR in place:
-
-https://github.com/spack/spack/pull/42264
-
-but until this is merged into develop, you'll need to edit the code yourself. Run
-`spack edit hdf5` and edit per this diff:
-```diff
-diff --git a/var/spack/repos/builtin/packages/hdf5/package.py b/var/spack/repos/builtin/packages/hdf5/package.py
-index 1f19db8dbb..be49216e18 100644
---- a/var/spack/repos/builtin/packages/hdf5/package.py
-+++ b/var/spack/repos/builtin/packages/hdf5/package.py
-@@ -293,9 +293,13 @@ def flag_handler(self, name, flags):
-                 cmake_flags.append(self.compiler.cc_pic_flag)
-             if spec.satisfies("@1.8.21 %oneapi@2023.0.0"):
-                 cmake_flags.append("-Wno-error=int-conversion")
-+            if spec.satisfies("%apple-clang@15:"):
-+                cmake_flags.append("-Wl,-ld_classic")
-         elif name == "cxxflags":
-             if spec.satisfies("@:1.8.12+cxx~shared"):
-                 cmake_flags.append(self.compiler.cxx_pic_flag)
-+            if spec.satisfies("%apple-clang@15:"):
-+                cmake_flags.append("-Wl,-ld_classic")
-         elif name == "fflags":
-             if spec.satisfies("%cce+fortran"):
-                 # Cray compiler generates module files with uppercase names by
-```
-
 ## Building GEOS and MAPL
 
 ### Loading modules
