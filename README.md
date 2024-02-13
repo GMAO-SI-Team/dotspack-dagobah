@@ -24,6 +24,7 @@ export SPACK_ROOT=$HOME/spack
 # Only run these if SPACK_ROOT is defined
 if [ ! -z ${SPACK_ROOT} ]
 then
+   export SPACK_SKIP_MODULES=1
    . ${SPACK_ROOT}/share/spack/setup-env.sh
 
    # Next, we need to determine our macOS by *name*. So, we need to have a
