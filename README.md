@@ -10,15 +10,12 @@ These are based on those from spack-stack
 brew install coreutils
 brew install gcc@12
 brew install git
-brew install git-lfs
 brew install lmod
 brew install wget
 brew install bash
 brew install curl
 brew install cmake
 brew install openssl
-brew install qt@5
-brew install mysql
 ```
 
 ### .zshenv
