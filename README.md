@@ -2,6 +2,31 @@
 
 This is a collection of .spack files for dagobah
 
+## Homebrew
+
+These are based on those from spack-stack
+
+```bash
+brew install coreutils
+brew install gcc@12
+brew install git
+brew install git-lfs
+brew install lmod
+brew install wget
+brew install bash
+brew install curl
+brew install cmake
+brew install openssl
+brew install qt@5
+brew install mysql
+```
+
+### .zshenv
+
+Add to .zshenv:
+```bash 
+. $(brew --prefix)/opt/lmod/init/zsh
+```
 ## Clone spack
 
 First, we need spack. Below we assume we clone spack into `$HOME/spack`.
@@ -48,31 +73,6 @@ fi
 We need the OS_NAME variable to determine which lmod files to use as a laptop might be on 
 either ventura or sonoma.
 
-## Homebrew
-
-These are based on those from spack-stack
-
-```bash
-brew install coreutils
-brew install gcc@12
-brew install git
-brew install git-lfs
-brew install lmod
-brew install wget
-brew install bash
-brew install curl
-brew install cmake
-brew install openssl
-brew install qt@5
-brew install mysql
-```
-
-### .zshenv
-
-Add to .zshenv:
-```bash 
-. $(brew --prefix)/opt/lmod/init/zsh
-```
 
 ## Spack Configuration
 
