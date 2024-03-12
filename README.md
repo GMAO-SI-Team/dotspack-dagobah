@@ -67,6 +67,13 @@ brew install qt@5
 brew install mysql
 ```
 
+### .zshenv
+
+Add to .zshenv:
+```bash 
+. $(brew --prefix)/opt/lmod/init/zsh
+```
+
 ## Spack Configuration
 
 ### config
