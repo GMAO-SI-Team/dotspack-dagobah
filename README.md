@@ -242,6 +242,8 @@ is a copy in the `extra_modulefiles` directory. Copy it to the right place:
 cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core/
 ```
 
+Note that the Spack lmod directory won't be created until you run a first `spack install` command.
+
 
 ## Building GEOS and MAPL
 
