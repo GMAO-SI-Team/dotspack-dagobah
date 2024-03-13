@@ -231,6 +231,14 @@ spack install esmf
 spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
 ```
 
+### Regenerate Modules
+
+Sometimes spack needs a nudge to generate lmod files. This can be done (at any time) with:
+
+```bash
+spack module lmod refresh --delete-tree -y
+```
+
 ### Extra apple-clang module
 
 Spack is not able to create a modulefile for apple-clang since it is a
