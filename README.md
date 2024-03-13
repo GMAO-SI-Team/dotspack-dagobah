@@ -284,16 +284,6 @@ No changes were needed for MAPL
 
 ### GEOS
 
-#### Building
-
-To build GEOS a fix is currently needed in `GEOSgcm_GridComp`, see
-
-https://github.com/GEOS-ESM/GEOSgcm_GridComp/pull/888
-
-==> Now in `develop`
-
-Remember also to add all the CMake compiler strings if using `spack load`
-
 #### Running
 
 You'll need to update the `gcm_run.j` to not use `g5_modules` and instead use the spack modules.
