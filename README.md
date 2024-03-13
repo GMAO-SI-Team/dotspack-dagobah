@@ -187,7 +187,7 @@ These are based on how we expect libraries to be built for GEOS and MAPL.
 
 ### modules
 
-Next setup the `modules.yaml` file to look like:
+Next setup the `modules.yaml` file to look like this by running `spack config edit modules`:
 
 ```yaml
 modules:
