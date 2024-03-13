@@ -219,16 +219,6 @@ modules:
     - LD_LIBRARY_PATH
 ```
 
-#### Extra apple-clang module
-
-Spack is not able to create a modulefile for apple-clang since it is a
-builtin compiler or something. But, we want to have a modulefile for it
-so we can have `FC`, `CC` etc. set in the environment. So we make one. There
-is a copy in the `extra_modulefiles` directory. Copy it to the right place:
-
-```bash
-cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core/
-```
 
 ## Spack Install
 
@@ -240,6 +230,18 @@ spack install openmpi
 spack install esmf
 spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
 ```
+
+### Extra apple-clang module
+
+Spack is not able to create a modulefile for apple-clang since it is a
+builtin compiler or something. But, we want to have a modulefile for it
+so we can have `FC`, `CC` etc. set in the environment. So we make one. There
+is a copy in the `extra_modulefiles` directory. Copy it to the right place:
+
+```bash
+cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core/
+```
+
 
 ## Building GEOS and MAPL
 
