@@ -255,7 +255,7 @@ Note that the Spack lmod directory won't be created until you run a first `spack
 
 ## Building GEOS and MAPL
 
-### Loading modules
+### Loading lmodules (recommended)
 
 If you are using the module way of loading spack, you need to do:
 
@@ -272,11 +272,21 @@ If you do `spack load` you need to do:
 ```bash
 spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 ```
-but now whenever you run CMake, you need to tell it where to find the
-compilers:
+
+### Build command
+
+The usual CMake commmand can be used to build GEOS or MAPL:
+
 ```bash
-cmake ... -DCMAKE_Fortran_COMPILER=gfortran-12 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake -B build -S . --install-prefix=$(pwd)/install --fresh
+cmake --build build --target install -j 6
 ```
+
+NOTE: If you used `spack load` you'll need to supply the compilers to the first command:
+```
+cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-12 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+```
+as `spack load` does not populate `FC`, `CC` and `CXX`.
 
 ### MAPL
 
