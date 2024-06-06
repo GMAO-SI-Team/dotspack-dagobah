@@ -23,8 +23,8 @@ setenv("CC","/usr/bin/clang")
 setenv("CXX","/usr/bin/clang++")
 local homedir = os.getenv("HOME")
 local homebrewdir = pathJoin(homedir, ".homebrew/brew")
-setenv("FC",pathJoin(homebrewdir, "bin/gfortran-12"))
-setenv("F90",pathJoin(homebrewdir, "bin/gfortran-12"))
+setenv("FC",pathJoin(homebrewdir, "bin/gfortran-13"))
+setenv("F90",pathJoin(homebrewdir, "bin/gfortran-13"))
 
 -- per scivision, set OpenMP_ROOT for clang: https://gist.github.com/scivision/16c2ca1dc250f54d34f1a1a35596f4a0
 setenv("OpenMP_ROOT",pathJoin(homebrewdir, "opt/libomp"))

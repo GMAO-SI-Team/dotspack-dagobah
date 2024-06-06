@@ -4,8 +4,8 @@ compilers:
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
-      f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
-      fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
+      f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
+      fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
     flags: {}
     operating_system: sonoma
     target: aarch64
@@ -26,12 +26,25 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@=13.2.0
+    spec: gcc@=13.3.0
     paths:
       cc: /Users/mathomp4/.homebrew/brew/bin/gcc-13
       cxx: /Users/mathomp4/.homebrew/brew/bin/g++-13
       f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
       fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
+    flags: {}
+    operating_system: sonoma
+    target: aarch64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=14.1.0
+    paths:
+      cc: /Users/mathomp4/.homebrew/brew/bin/gcc-14
+      cxx: /Users/mathomp4/.homebrew/brew/bin/g++-14
+      f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
+      fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
     flags: {}
     operating_system: sonoma
     target: aarch64

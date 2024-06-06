@@ -14,13 +14,26 @@ modules:
         suffixes:
           +debug: 'debug'
           build_type=Debug: 'debug'
+        autoload: direct
+        environment:
+          set:
+            '{name}_ROOT': '{prefix}'
       hdf5:
+        suffixes:
+          ~shared: 'static'
+      netcdf-c:
+        suffixes:
+          ~shared: 'static'
+      netcdf-fortran:
         suffixes:
           ~shared: 'static'
       esmf:
         suffixes:
           ~shared: 'static'
           esmf_pio=OFF: 'nopio'
+      geosgcm:
+        suffixes:
+          +develop: 'develop'
   prefix_inspections:
     lib64: [LD_LIBRARY_PATH]
     lib:
