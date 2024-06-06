@@ -156,6 +156,7 @@ spack external find --exclude bison --exclude openssl \
 Now edit the packages.yaml file with `spack config edit packages` and add the following:
 
 ```yaml
+packages:
   all:
     compiler: [apple-clang@15.0.0]
     providers:
@@ -169,7 +170,7 @@ Now edit the packages.yaml file with `spack config edit packages` and add the fo
   netcdf-c:
     variants: +hdf4 +dap
   esmf:
-    variants: ~pnetcdf ~xerces ~external-parallelio
+    variants: ~pnetcdf ~xerces
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
