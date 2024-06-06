@@ -12,7 +12,7 @@ packages:
   netcdf-c:
     variants: +hdf4 +dap
   esmf:
-    variants: ~pnetcdf ~xerces ~external-parallelio
+    variants: ~pnetcdf ~xerces
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
