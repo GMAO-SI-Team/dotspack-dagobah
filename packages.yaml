@@ -47,7 +47,7 @@ packages:
       prefix: /Users/mathomp4/.homebrew/brew
   cmake:
     externals:
-    - spec: cmake@3.28.1
+    - spec: cmake@3.29.6
       prefix: /Users/mathomp4/.homebrew/brew
   cvs:
     externals:
@@ -59,7 +59,7 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.43.0+tcltk
+    - spec: git@2.45.2+tcltk
       prefix: /Users/mathomp4/.homebrew/brew
     - spec: git@2.39.3~tcltk
       prefix: /usr
