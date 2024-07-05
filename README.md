@@ -4,6 +4,23 @@ This is a collection of .spack files for dagobah
 
 ## Homebrew
 
+### Installing Homebrew
+
+For a mac with no admin rights, I often just [clone homebrew](https://docs.brew.sh/Installation#untar-anywhere-unsupported) into my home directory. This is not
+the recommended way to install homebrew, but it works. 
+
+```bash
+git clone https://github.com/Homebrew/brew homebrew
+```
+
+Then:
+
+```bash
+eval "$(homebrew/bin/brew shellenv)"
+brew update --force --quiet
+chmod -R go-w "$(brew --prefix)/share/zsh"
+```
+
 These are based on those from spack-stack
 
 ```bash
@@ -18,10 +35,16 @@ brew install cmake
 brew install openssl
 ```
 
+NOTE 1: The install of gcc will be slow as they are built from source since we are using a non-standard location for homebrew.
+NOTE 2: We specify `gcc@13` as GEOS does not yet support GCC 14. But, it's possible something from brew will ask for GCC 14 and that
+might be installed.
+
 ### .zshenv
 
 Add to .zshenv:
+
 ```bash 
+eval "$(brew --prefix)/bin/brew shellenv"
 . $(brew --prefix)/opt/lmod/init/zsh
 ```
 ## Clone spack
@@ -67,7 +90,7 @@ then
 fi
 ```
 
-We need the OS_NAME variable to determine which lmod files to use as a laptop might be on 
+We need the `OS_NAME` variable to determine which lmod files to use as a laptop might be on 
 either ventura or sonoma.
 
 
@@ -75,7 +98,7 @@ either ventura or sonoma.
 
 ### config
 
-Set the number of build_jobs to 6 (or whatever you want)
+Set the number of `build_jobs` to 6 (or whatever you want)
 
 ```bash
 spack config add config:build_jobs:6
@@ -92,7 +115,7 @@ For example, I got:
 ```bash
 ❯ spack compiler find
 ==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/compilers.yaml
-    gcc@13.2.0  gcc@12.3.0  gcc@12.2.0  apple-clang@15.0.0
+    gcc@13.3.0  gcc@12.3.0  apple-clang@15.0.0
 ==> Compilers are defined in the following files:
     /Users/mathomp4/.spack/darwin/compilers.yaml
 ```
@@ -148,7 +171,7 @@ we want to exclude some packages that experimentation has found should be built 
 ```bash
 spack external find --exclude bison --exclude openssl \
    --exclude gmake --exclude m4 --exclude curl --exclude python \
-   --exclude gettext --exclude perl
+   --exclude gettext
 ```
 
 #### Additional settings
@@ -179,7 +202,7 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: ~gfs_phys +pic ~quad_precision +yaml constants=GEOS precision=32,64
+    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS +deprecated_io
   mapl:
     variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
 ```
@@ -233,6 +256,7 @@ spack install python py-numpy py-pyyaml py-ruamel-yaml
 spack install openmpi
 spack install esmf
 spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
+spack install mepo
 ```
 
 ### Regenerate Modules
@@ -264,7 +288,7 @@ Note that the Spack lmod directory won't be created until you run a first `spack
 If you are using the module way of loading spack, you need to do:
 
 ```bash
-module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
+module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo
 ```
 
 This might be too much, but it works.
@@ -274,7 +298,7 @@ This might be too much, but it works.
 If you do `spack load` you need to do:
 
 ```bash
-spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
+spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo
 ```
 
 ### Build command
