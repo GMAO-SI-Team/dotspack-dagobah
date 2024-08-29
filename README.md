@@ -171,7 +171,7 @@ we want to exclude some packages that experimentation has found should be built 
 ```bash
 spack external find --exclude bison --exclude openssl \
    --exclude gmake --exclude m4 --exclude curl --exclude python \
-   --exclude gettext
+   --exclude gettext --exclude perl
 ```
 
 #### Additional settings
