@@ -25,7 +25,7 @@ These are based on those from spack-stack
 
 ```bash
 brew install coreutils
-brew install gcc@13
+brew install gcc@14
 brew install git
 brew install lmod
 brew install wget
@@ -36,7 +36,7 @@ brew install openssl
 ```
 
 NOTE 1: The install of gcc will be slow as they are built from source since we are using a non-standard location for homebrew.
-NOTE 2: We specify `gcc@13` as GEOS does not yet support GCC 14. But, it's possible something from brew will ask for GCC 14 and that
+NOTE 2: We specify `gcc@14` as GEOS does not yet support GCC 14. But, it's possible something from brew will ask for GCC 14 and that
 might be installed.
 
 ### .zshenv
@@ -115,24 +115,24 @@ For example, I got:
 ```bash
 ❯ spack compiler find
 ==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/compilers.yaml
-    gcc@13.3.0  gcc@12.3.0  apple-clang@15.0.0
+    gcc@14.2.0  gcc@13.3.0 gcc@12.4.0  apple-clang@16.0.0
 ==> Compilers are defined in the following files:
     /Users/mathomp4/.spack/darwin/compilers.yaml
 ```
 
 Of these, we will focus on apple-clang. So now we need to fix up the compilers.yaml file to
-point to `gfortran-13` from brew. So first, run `which gfortran-13` to get the path to the
-gfortran-13 executable. On dagobah it is:
+point to `gfortran-14` from brew. So first, run `which gfortran-14` to get the path to the
+gfortran-14 executable. On dagobah it is:
 ```bash
-❯ which gfortran-13
-/Users/mathomp4/.homebrew/brew/bin/gfortran-13
+❯ which gfortran-14
+/Users/mathomp4/.homebrew/brew/bin/gfortran-14
 ```
 
 Then, edit the compilers.yaml file with `spack config edit compilers` and change:
 
 ```yaml
 - compiler:
-    spec: apple-clang@=15.0.0
+    spec: apple-clang@=16.0.0
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
@@ -148,12 +148,12 @@ Then, edit the compilers.yaml file with `spack config edit compilers` and change
 to:
 ```yaml
 - compiler:
-    spec: apple-clang@=15.0.0
+    spec: apple-clang@=16.0.0
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
-      f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
-      fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
+      f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
+      fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
     flags: {}
     operating_system: sonoma
     target: aarch64
@@ -181,7 +181,7 @@ Now edit the packages.yaml file with `spack config edit packages` and add the fo
 ```yaml
 packages:
   all:
-    compiler: [apple-clang@15.0.0]
+    compiler: [apple-clang@16.0.0]
     providers:
       mpi: [openmpi]
       blas: [openblas]
@@ -220,7 +220,7 @@ modules:
     - lmod
     lmod:
       core_compilers:
-      - apple-clang@15.0.0
+      - apple-clang@16.0.0
       hierarchy:
       - mpi
       hash_length: 0
@@ -257,6 +257,7 @@ spack install openmpi
 spack install esmf
 spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
 spack install mepo
+spack install udunits
 ```
 
 ### Regenerate Modules
@@ -288,7 +289,7 @@ Note that the Spack lmod directory won't be created until you run a first `spack
 If you are using the module way of loading spack, you need to do:
 
 ```bash
-module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo
+module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo udunits
 ```
 
 This might be too much, but it works.
@@ -298,7 +299,7 @@ This might be too much, but it works.
 If you do `spack load` you need to do:
 
 ```bash
-spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo
+spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo udunits
 ```
 
 ### Build command
@@ -312,7 +313,7 @@ cmake --build build --target install -j 6
 
 NOTE: If you used `spack load` you'll need to supply the compilers to the first command:
 ```
-cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-13 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-14 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 ```
 as `spack load` does not populate `FC`, `CC` and `CXX`.
 
