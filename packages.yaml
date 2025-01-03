@@ -28,69 +28,62 @@ packages:
   sz3:
     variants: +hdf5
 
-  autoconf:
+  #nag:
+    #externals:
+    #- spec: nag@=7.2.7220
+      #prefix: /Users/mathomp4/installed/Core/nag/7.2.20
+      #extra_attributes:
+        #compilers:
+          #cc: /usr/bin/clang
+          #cxx: /usr/bin/clang++
+        #environment:
+          #set:
+            #NAG_KUSARI_FILE: /Users/mathomp4/nag.key
+    #buildable: false
+
+  openssh:
     externals:
-    - spec: autoconf@2.72
-      prefix: /Users/mathomp4/.homebrew/brew
-  automake:
-    externals:
-    - spec: automake@1.17
-      prefix: /Users/mathomp4/.homebrew/brew
-  texinfo:
-    externals:
-    - spec: texinfo@7.1.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
+    - spec: openssh@9.7p1
       prefix: /usr
-  swig:
+  pkgconf:
     externals:
-    - spec: swig@4.3.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  coreutils:
-    externals:
-    - spec: coreutils@9.5
-      prefix: /Users/mathomp4/.homebrew/brew
-  cmake:
-    externals:
-    - spec: cmake@3.31.2
-      prefix: /Users/mathomp4/.homebrew/brew
-  git-lfs:
-    externals:
-    - spec: git-lfs@3.6.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  cvs:
-    externals:
-    - spec: cvs@1.12.13
+    - spec: pkgconf@2.3.0
       prefix: /Users/mathomp4/.homebrew/brew
   doxygen:
     externals:
     - spec: doxygen@1.12.0+graphviz~mscgen
       prefix: /Users/mathomp4/.homebrew/brew
-  pkgconf:
+  meson:
     externals:
-    - spec: pkgconf@2.3.0
+    - spec: meson@1.6.1
       prefix: /Users/mathomp4/.homebrew/brew
-  subversion:
+  texinfo:
     externals:
-    - spec: subversion@1.14.4
+    - spec: texinfo@7.1.1
+      prefix: /Users/mathomp4/.homebrew/brew
+  cvs:
+    externals:
+    - spec: cvs@1.12.13
+      prefix: /Users/mathomp4/.homebrew/brew
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.6.0
+      prefix: /Users/mathomp4/.homebrew/brew
+  libtool:
+    externals:
+    - spec: libtool@2.5.4
+      prefix: /Users/mathomp4/.homebrew/brew
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  autoconf:
+    externals:
+    - spec: autoconf@2.72
       prefix: /Users/mathomp4/.homebrew/brew
   groff:
     externals:
     - spec: groff@1.23.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  ninja:
-    externals:
-    - spec: ninja@1.12.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  meson:
-    externals:
-    - spec: meson@1.6.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  gawk:
-    externals:
-    - spec: gawk@5.3.1
       prefix: /Users/mathomp4/.homebrew/brew
   git:
     externals:
@@ -98,11 +91,33 @@ packages:
       prefix: /Users/mathomp4/.homebrew/brew
     - spec: git@2.39.5~tcltk
       prefix: /usr
-  libtool:
+  cmake:
     externals:
-    - spec: libtool@2.5.4
+    - spec: cmake@3.31.2
       prefix: /Users/mathomp4/.homebrew/brew
-  openssh:
+  gawk:
     externals:
-    - spec: openssh@9.7p1
-      prefix: /usr
+    - spec: gawk@5.3.1
+      prefix: /Users/mathomp4/.homebrew/brew
+  swig:
+    externals:
+    - spec: swig@4.3.0
+      prefix: /Users/mathomp4/.homebrew/brew
+  automake:
+    externals:
+    - spec: automake@1.17
+      prefix: /Users/mathomp4/.homebrew/brew
+  ninja:
+    externals:
+    - spec: ninja@1.12.1
+      prefix: /Users/mathomp4/.homebrew/brew
+  coreutils:
+    externals:
+    - spec: coreutils@9.5
+      prefix: /Users/mathomp4/.homebrew/brew
+  subversion:
+    externals:
+    - spec: subversion@1.14.5
+      prefix: /Users/mathomp4/.homebrew/brew
+
+
