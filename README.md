@@ -96,6 +96,19 @@ either ventura or sonoma.
 
 ## Spack Configuration
 
+**### repos
+
+We rely on an extra repo for `geosgcm` and `geosfvdycore`. In `repos.yaml` we have:
+```yaml
+repos:
+- /Users/mathomp4/geosesm-spack
+```
+This is retreived by:
+```
+git clone git@github.com:GMAO-SI-Team/geosesm-spack.git
+```
+and you'll want to point this file to the correct location of the clone.
+
 ### config
 
 Set the number of `build_jobs` to 6 (or whatever you want)
@@ -176,7 +189,7 @@ spack external find --exclude bison --exclude openssl \
 
 #### Additional settings
 
-Now edit the packages.yaml file with `spack config edit packages` and add the following:
+Now edit the `packages.yaml` file with `spack config edit packages` and add the following:
 
 ```yaml
 packages:
@@ -191,7 +204,7 @@ packages:
     # Note that cdo requires threadsafe, but hdf5 doesn't
     # seem to want that with parallel. Hmm.
   netcdf-c:
-    variants: +hdf4 +dap
+    variants: ~hdf4 +dap
   esmf:
     variants: ~pnetcdf ~xerces
   cdo:
@@ -202,9 +215,12 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS +deprecated_io
+    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS
+      build_type=Release +deprecated_io
   mapl:
     variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
+  sz3:
+    variants: +hdf5
 ```
 
 These are based on how we expect libraries to be built for GEOS and MAPL.
