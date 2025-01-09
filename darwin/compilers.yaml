@@ -51,3 +51,18 @@ compilers:
     modules: []
     environment: {}
     extra_rpaths: []
+- compiler:
+    spec: nag@=7.2.7220
+    paths:
+      cc: /usr/bin/clang
+      cxx: /usr/bin/clang++
+      f77: /Users/mathomp4/installed/Core/nag/7.2.20/bin/nagfor
+      fc: /Users/mathomp4/installed/Core/nag/7.2.20/bin/nagfor
+    flags: {}
+    operating_system: sonoma
+    target: aarch64
+    modules: []
+    environment:
+      set:
+        NAG_KUSARI_FILE: /Users/mathomp4/nag.key
+    extra_rpaths: []

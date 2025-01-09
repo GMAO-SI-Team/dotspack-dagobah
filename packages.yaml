@@ -10,7 +10,7 @@ packages:
     # Note that cdo requires threadsafe, but hdf5 doesn't
     # seem to want that with parallel. Hmm.
   netcdf-c:
-    variants: +hdf4 +dap
+    variants: ~hdf4 +dap
   esmf:
     variants: ~pnetcdf ~xerces
   cdo:
@@ -27,19 +27,6 @@ packages:
     variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
   sz3:
     variants: +hdf5
-
-  #nag:
-    #externals:
-    #- spec: nag@=7.2.7220
-      #prefix: /Users/mathomp4/installed/Core/nag/7.2.20
-      #extra_attributes:
-        #compilers:
-          #cc: /usr/bin/clang
-          #cxx: /usr/bin/clang++
-        #environment:
-          #set:
-            #NAG_KUSARI_FILE: /Users/mathomp4/nag.key
-    #buildable: false
 
   openssh:
     externals:
