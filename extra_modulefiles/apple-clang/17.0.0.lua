@@ -1,13 +1,13 @@
 -- -*- lua -*-
 
 whatis([[Name : apple-clang]])
-whatis([[Version : 16.0.0]])
+whatis([[Version : 17.0.0]])
 whatis([[Target : m2]])
 whatis([[Short description : Apple's Clang compiler]])
 whatis([[Configure options : unknown, software installed outside of Spack]])
 
 help([[Name   : apple-clang]])
-help([[Version: 16.0.0]])
+help([[Version: 17.0.0]])
 help([[Target : m2]])
 help()
 help([[Apple's Clang compiler]])
@@ -16,7 +16,7 @@ help([[Apple's Clang compiler]])
 family("compiler")
 
 -- Loading this module unlocks the path below unconditionally
-prepend_path("MODULEPATH", "/Users/mathomp4/spack/share/spack/lmod/darwin-sonoma-aarch64/Core")
+prepend_path("MODULEPATH", "/Users/mathomp4/spack/share/spack/lmod/darwin-sequoia-aarch64/Core")
 
 -- set the compiler environment variables
 setenv("CC","/usr/bin/clang")

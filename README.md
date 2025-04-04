@@ -10,7 +10,8 @@ For a mac with no admin rights, I often just [clone homebrew](https://docs.brew.
 the recommended way to install homebrew, but it works. 
 
 ```bash
-git clone https://github.com/Homebrew/brew homebrew
+mkdir -p $HOME/.homebrew
+git clone https://github.com/Homebrew/brew $HOME/.homebrew
 ```
 
 Then:
@@ -33,11 +34,13 @@ brew install bash
 brew install curl
 brew install cmake
 brew install openssl
+brew install rust
 ```
 
 NOTE 1: The install of gcc will be slow as they are built from source since we are using a non-standard location for homebrew.
 NOTE 2: We specify `gcc@14` as GEOS does not yet support GCC 14. But, it's possible something from brew will ask for GCC 14 and that
 might be installed.
+NOTE 3: Yes, `rust` is there. Some Python projects need it
 
 ### .zshenv
 
@@ -73,15 +76,15 @@ then
    . ${SPACK_ROOT}/share/spack/setup-env.sh
 
    # Next, we need to determine our macOS by *name*. So, we need to have a
-   # variable that resolves to "ventura" or "sonoma".
+   # variable that resolves to "sonoma" or "sequoia"
 
    OS_VERSION=$(sw_vers --productVersion | cut -d. -f1)
-   if [[ $OS_VERSION == 13 ]]
-   then
-      OS_NAME='ventura'
-   elif [[ $OS_VERSION == 14 ]]
+   if [[ $OS_VERSION == 14 ]]
    then
       OS_NAME='sonoma'
+   elif [[ $OS_VERSION == 15 ]]
+   then
+      OS_NAME='sequoia'
    else
       OS_NAME='unknown'
    fi
@@ -91,12 +94,11 @@ fi
 ```
 
 We need the `OS_NAME` variable to determine which lmod files to use as a laptop might be on 
-either ventura or sonoma.
-
+either `sonoma` or `sequoia` and the lmod files are different.
 
 ## Spack Configuration
 
-**### repos
+### repos
 
 We rely on an extra repo for `geosgcm` and `geosfvdycore`. In `repos.yaml` we have:
 ```yaml
@@ -128,73 +130,32 @@ For example, I got:
 ```bash
 ❯ spack compiler find
 ==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/compilers.yaml
-    gcc@14.2.0  gcc@13.3.0 gcc@12.4.0  apple-clang@16.0.0
+    gcc@14.2.0  gcc@13.3.0 gcc@12.4.0  apple-clang@17.0.0
 ==> Compilers are defined in the following files:
-    /Users/mathomp4/.spack/darwin/compilers.yaml
+    /Users/mathomp4/.spack/packages.yaml
 ```
 
-Of these, we will focus on apple-clang. So now we need to fix up the compilers.yaml file to
-point to `gfortran-14` from brew. So first, run `which gfortran-14` to get the path to the
-gfortran-14 executable. On dagobah it is:
-```bash
-❯ which gfortran-14
-/Users/mathomp4/.homebrew/brew/bin/gfortran-14
-```
-
-Then, edit the compilers.yaml file with `spack config edit compilers` and change:
-
-```yaml
-- compiler:
-    spec: apple-clang@=16.0.0
-    paths:
-      cc: /usr/bin/clang
-      cxx: /usr/bin/clang++
-      f77: /usr/local/bin/gfortran
-      fc: /usr/local/bin/gfortran
-    flags: {}
-    operating_system: sonoma
-    target: aarch64
-    modules: []
-    environment: {}
-    extra_rpaths: []
-```
-to:
-```yaml
-- compiler:
-    spec: apple-clang@=16.0.0
-    paths:
-      cc: /usr/bin/clang
-      cxx: /usr/bin/clang++
-      f77: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
-      fc: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
-    flags: {}
-    operating_system: sonoma
-    target: aarch64
-    modules: []
-    environment: {}
-    extra_rpaths: []
-```
+Note that in Spack 1.0.0 and later, the compilers.yaml file is not used. Instead, the compilers are
+added to the `packages.yaml` file. So, you can ignore the compilers.yaml file.
 
 ### packages
 
 Now we can use `spack external find` to find the packages we need already in homebrew. But,
 we want to exclude some packages that experimentation has found should be built by spack.
 
-
 ```bash
 spack external find --exclude bison --exclude openssl \
    --exclude gmake --exclude m4 --exclude curl --exclude python \
-   --exclude gettext --exclude perl
+   --exclude gettext --exclude perl --exclude meson
 ```
 
 #### Additional settings
 
-Now edit the `packages.yaml` file with `spack config edit packages` and add the following:
+Now edit the packages.yaml file with `spack config edit packages` and add the following:
 
 ```yaml
 packages:
   all:
-    compiler: [apple-clang@16.0.0]
     providers:
       mpi: [openmpi]
       blas: [openblas]
@@ -204,7 +165,7 @@ packages:
     # Note that cdo requires threadsafe, but hdf5 doesn't
     # seem to want that with parallel. Hmm.
   netcdf-c:
-    variants: ~hdf4 +dap
+    variants: +hdf4 +dap
   esmf:
     variants: ~pnetcdf ~xerces
   cdo:
@@ -215,12 +176,9 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS
-      build_type=Release +deprecated_io
+    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS +deprecated_io
   mapl:
     variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
-  sz3:
-    variants: +hdf5
 ```
 
 These are based on how we expect libraries to be built for GEOS and MAPL.
@@ -236,7 +194,7 @@ modules:
     - lmod
     lmod:
       core_compilers:
-      - apple-clang@16.0.0
+      - apple-clang@17.0.0
       hierarchy:
       - mpi
       hash_length: 0
@@ -276,6 +234,11 @@ spack install mepo
 spack install udunits
 ```
 
+This could just as well be:
+```bash
+spack install --only dependents [geosgcm|mapl]
+```
+
 ### Regenerate Modules
 
 Sometimes spack needs a nudge to generate lmod files. This can be done (at any time) with:
@@ -292,7 +255,7 @@ so we can have `FC`, `CC` etc. set in the environment. So we make one. There
 is a copy in the `extra_modulefiles` directory. Copy it to the right place:
 
 ```bash
-cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core/
+cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sequoia-aarch64/Core/
 ```
 
 Note that the Spack lmod directory won't be created until you run a first `spack install` command.
@@ -353,7 +316,7 @@ and add:
 
 ```csh
 source $LMOD_PKG/init/csh
-module use -a $SPACK_ROOT/share/spack/lmod/darwin-sonoma-aarch64/Core
+module use -a $SPACK_ROOT/share/spack/lmod/darwin-sequoia-aarch64/Core
 module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 module list
 setenv DYLD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${GEOSDIR}/lib
