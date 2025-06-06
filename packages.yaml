@@ -1,4 +1,8 @@
 packages:
+  cmake:
+    externals:
+    - spec: cmake@4.0.1
+      prefix: /Users/mathomp4/.homebrew/brew
   nag:
     externals:
     - spec: nag@7.2.7220
@@ -16,13 +20,6 @@ packages:
           cxx: /usr/bin/clang++
   gcc:
     externals:
-    - spec: gcc@12.3.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-12
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-12
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
@@ -118,10 +115,6 @@ packages:
       prefix: /Users/mathomp4/.homebrew/brew
     - spec: git@2.39.5~tcltk
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.31.2
-      prefix: /Users/mathomp4/.homebrew/brew
   gawk:
     externals:
     - spec: gawk@5.3.1
