@@ -50,19 +50,33 @@ Add to .zshenv:
 eval "$(brew --prefix)/bin/brew shellenv"
 . $(brew --prefix)/opt/lmod/init/zsh
 ```
+
 ## Clone spack
 
-First, we need spack. Below we assume we clone spack into `$HOME/spack`.
+First, we need spack. Below we assume we clone spack into `$HOME/spack-mathomp4` as we 
+are usually working on a fork of spack.
 
 ```bash
-git clone -c feature.manyFiles=true https://github.com/spack/spack.git
+git clone -c feature.manyFiles=true git@github.com:mathomp4/spack.git spack-mathomp4
 ```
+
+If you want to use the official spack, you can change the clone command to:
+```bash
+git clone -c feature.manyFiles=true git@github.com:spack/spack.git spack
+```
+
+
 
 ## Environment
 
 ### .zshenv
 
 ```
+export SPACK_ROOT=$HOME/spack-mathomp4
+```
+
+NOTE: If you are using the official spack, change this to:
+```bash
 export SPACK_ROOT=$HOME/spack
 ```
 
@@ -100,16 +114,41 @@ either `sonoma` or `sequoia` and the lmod files are different.
 
 ### repos
 
-We rely on an extra repo for `geosgcm` and `geosfvdycore`. In `repos.yaml` we have:
-```yaml
-repos:
-- /Users/mathomp4/geosesm-spack
+Due to how spack is now split with the package repo being separate, we
+now clone it ourselves and tell spack where to find it. This is done in the `repos.yaml` file.
+
+#### Clone spack package repository
+
+```bash
+git clone -c feature.manyFiles=true git@github.com:mathomp4/spack-packages.git spack-packages-mathomp4
 ```
+
+Again, this is because we are working on a fork of the spack packages. If you want to use the official spack packages, you can change the clone command to:
+```bash
+git clone -c feature.manyFiles=true git@github.com:spack/spack-packages.git spack-packages
+```
+
+#### Clone geosesm-spack repository
+
+We rely on an extra repo for `geosgcm` and `geosfvdycore`. 
 This is retreived by:
 ```
 git clone git@github.com:GMAO-SI-Team/geosesm-spack.git
 ```
-and you'll want to point this file to the correct location of the clone.
+
+#### repos.yaml
+
+Finally, we need to tell spack where to find the package repositories. This is done in the `repos.yaml` file.
+
+```yaml
+repos:
+  builtin:
+    git: git@github.com:mathomp4/spack-packages.git
+    destination: /Users/mathomp4/spack-packages-mathomp4
+  geosesm: /Users/mathomp4/geosesm-spack
+```
+
+Again, change as needed if you are using the official spack packages.
 
 ### config
 
