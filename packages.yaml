@@ -59,11 +59,13 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS build_type=Release +portable_kinds
+    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS build_type=Release +deprecated_io
   mapl:
     variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
   sz3:
     variants: +hdf5
+  openmpi:
+    variants: +internal-hwloc +internal-libevent +internal-pmix
 
   openssh:
     externals:

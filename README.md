@@ -263,7 +263,15 @@ Note that the Spack lmod directory won't be created until you run a first `spack
 
 ## Building GEOS and MAPL
 
-### Loading lmodules (recommended)
+### spack load
+
+If you do `spack load` you need to do:
+
+```bash
+spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo udunits
+```
+
+### Loading lmodules
 
 If you are using the module way of loading spack, you need to do:
 
@@ -272,14 +280,6 @@ module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger f
 ```
 
 This might be too much, but it works.
-
-### spack load
-
-If you do `spack load` you need to do:
-
-```bash
-spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo udunits
-```
 
 ### Build command
 
@@ -302,9 +302,10 @@ No changes were needed for MAPL
 
 ### GEOS
 
-#### Running
+#### Running (with modulefiles)
 
-You'll need to update the `gcm_run.j` to not use `g5_modules` and instead use the spack modules.
+You'll need to update the `gcm_run.j` to not use `g5_modules` and instead use the spack modules if you are using
+the spack modulefiles. This isn't need with `spack load`, so that's usually the easier way.
 
 So comment out:
 
