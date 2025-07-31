@@ -2,4 +2,4 @@ repos:
   builtin:
     git: git@github.com:mathomp4/spack-packages.git
     destination: /Users/mathomp4/spack-packages-mathomp4
-  geosesm: /Users/mathomp4/geosesm-spack
+  geosesm: /Users/mathomp4/geosesm-spack/spack_repo/geosesm
