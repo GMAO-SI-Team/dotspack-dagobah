@@ -5,11 +5,11 @@ packages:
       prefix: /Users/mathomp4/.homebrew/brew
   nag:
     externals:
-    - spec: nag@7.2.7220
-      prefix: /Users/mathomp4/installed/Core/nag/7.2.20
+    - spec: nag@7.2.7228
+      prefix: /Users/mathomp4/installed/Core/nag/7.2.28
       extra_attributes:
         compilers:
-          fortran: /Users/mathomp4/installed/Core/nag/7.2.20/bin/nagfor
+          fortran: /Users/mathomp4/installed/Core/nag/7.2.28/bin/nagfor
   apple-clang:
     externals:
     - spec: apple-clang@17.0.0
@@ -33,7 +33,14 @@ packages:
         compilers:
           c: /Users/mathomp4/.homebrew/brew/bin/gcc-14
           cxx: /Users/mathomp4/.homebrew/brew/bin/g++-14
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
+    - spec: gcc@15.1.0 languages:='c,c++,fortran'
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        compilers:
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
   bash:
     externals:
     - spec: bash@5.2.37
