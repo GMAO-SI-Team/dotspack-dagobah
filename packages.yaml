@@ -1,15 +1,27 @@
 packages:
-  cmake:
+  gcc:
     externals:
-    - spec: cmake@4.0.1
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
       prefix: /Users/mathomp4/.homebrew/brew
-  nag:
-    externals:
-    - spec: nag@7.2.7228
-      prefix: /Users/mathomp4/installed/Core/nag/7.2.28
       extra_attributes:
         compilers:
-          fortran: /Users/mathomp4/installed/Core/nag/7.2.28/bin/nagfor
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-13
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-13
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
+    - spec: gcc@14.3.0 languages:='c,c++,fortran'
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        compilers:
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-14
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-14
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
+    - spec: gcc@15.2.0 languages:='c,c++,fortran'
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        compilers:
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran
   apple-clang:
     externals:
     - spec: apple-clang@17.0.0
@@ -18,33 +30,21 @@ packages:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
-  gcc:
+  llvm:
     externals:
-    - spec: gcc@13.3.0 languages='c,c++,fortran'
+    - spec: llvm@21.1.2 ~clang +flang
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
         compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-13
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-13
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
-    - spec: gcc@14.2.0 languages='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-14
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-14
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
-    - spec: gcc@15.1.0 languages='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
-  bash:
+          fortran: /Users/mathomp4/.homebrew/brew/bin/flang
+  nag:
     externals:
-    - spec: bash@5.2.37
-      prefix: /Users/mathomp4/.homebrew/brew
+    - spec: nag@7.2.7236
+      prefix: /Users/mathomp4/installed/Core/nag/7.2.36
+      extra_attributes:
+        compilers:
+          fortran: /Users/mathomp4/installed/Core/nag/7.2.36/bin/nagfor
+
   all:
     providers:
       mpi: [openmpi]
@@ -66,87 +66,112 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS build_type=Release +deprecated_io
+    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
+    variants: +extdata2g +fargparse +pflogger +pfunit
   sz3:
     variants: +hdf5
   openmpi:
     variants: +internal-hwloc +internal-libevent +internal-pmix
 
-  openssh:
+  libpressio:
+    variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
+  libpressio-tools:
+    variants: +hdf5 +mpi +sperr
+  sperr:
+    variants: ~openmp
+
+  autoconf:
     externals:
-    - spec: openssh@9.7p1
-      prefix: /usr
-  pkgconf:
-    externals:
-    - spec: pkgconf@2.3.0
+    - spec: autoconf@2.72
       prefix: /Users/mathomp4/.homebrew/brew
-  doxygen:
+  automake:
     externals:
-    - spec: doxygen@1.12.0+graphviz~mscgen
+    - spec: automake@1.18.1
       prefix: /Users/mathomp4/.homebrew/brew
-  meson:
+  bash:
     externals:
-    - spec: meson@1.6.1
+    - spec: bash@5.3.3
       prefix: /Users/mathomp4/.homebrew/brew
-  texinfo:
+  cmake:
     externals:
-    - spec: texinfo@7.1.1
+    - spec: cmake@4.1.1
       prefix: /Users/mathomp4/.homebrew/brew
   cvs:
     externals:
     - spec: cvs@1.12.13
       prefix: /Users/mathomp4/.homebrew/brew
-  git-lfs:
+  doxygen:
     externals:
-    - spec: git-lfs@3.6.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  libtool:
-    externals:
-    - spec: libtool@2.5.4
+    - spec: doxygen@1.14.0+graphviz~mscgen
       prefix: /Users/mathomp4/.homebrew/brew
   flex:
     externals:
     - spec: flex@2.6.4+lex
       prefix: /usr
-  autoconf:
+  gawk:
     externals:
-    - spec: autoconf@2.72
+    - spec: gawk@5.3.1
+      prefix: /Users/mathomp4/.homebrew/brew
+  git:
+    externals:
+    - spec: git@2.51.0+tcltk
+      prefix: /Users/mathomp4/.homebrew/brew
+    - spec: git@2.50.1~tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.7.0
       prefix: /Users/mathomp4/.homebrew/brew
   groff:
     externals:
     - spec: groff@1.23.0
       prefix: /Users/mathomp4/.homebrew/brew
-  git:
+  libtool:
     externals:
-    - spec: git@2.47.1+tcltk
-      prefix: /Users/mathomp4/.homebrew/brew
-    - spec: git@2.39.5~tcltk
-      prefix: /usr
-  gawk:
-    externals:
-    - spec: gawk@5.3.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  swig:
-    externals:
-    - spec: swig@4.3.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  automake:
-    externals:
-    - spec: automake@1.17
+    - spec: libtool@2.5.4
       prefix: /Users/mathomp4/.homebrew/brew
   ninja:
     externals:
-    - spec: ninja@1.12.1
+    - spec: ninja@1.13.1
       prefix: /Users/mathomp4/.homebrew/brew
-  coreutils:
+  npm:
     externals:
-    - spec: coreutils@9.5
+    - spec: npm@11.6.0
       prefix: /Users/mathomp4/.homebrew/brew
+  openssh:
+    externals:
+    - spec: openssh@9.9p2
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@2.5.1
+      prefix: /Users/mathomp4/.homebrew/brew
+  rust:
+    externals:
+    - spec: rust@1.90.0
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        cargo: /Users/mathomp4/.homebrew/brew/bin/cargo
+        compilers:
+          rust: /Users/mathomp4/.homebrew/brew/bin/rustc
   subversion:
     externals:
     - spec: subversion@1.14.5
       prefix: /Users/mathomp4/.homebrew/brew
-
-
+  swig:
+    externals:
+    - spec: swig@4.3.1
+      prefix: /Users/mathomp4/.homebrew/brew
+  tar:
+    externals:
+    - spec: tar@1.35
+      prefix: /Users/mathomp4
+  tcsh:
+    externals:
+    - spec: tcsh@6.24.16
+      prefix: /Users/mathomp4/.homebrew/brew
+  texinfo:
+    externals:
+    - spec: texinfo@7.2
+      prefix: /Users/mathomp4/.homebrew/brew
