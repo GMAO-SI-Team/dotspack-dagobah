@@ -72,7 +72,12 @@ packages:
   sz3:
     variants: +hdf5
   openmpi:
-    variants: +internal-hwloc +internal-libevent +internal-pmix
+    # Note: NAG has a bug with Open MPI 5.0.8
+    require: '@5.0.7'
+    variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
+  openblas:
+    prefer:
+    - build_system=cmake
 
   libpressio:
     variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
