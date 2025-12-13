@@ -26,7 +26,7 @@ These are based on those from spack-stack
 
 ```bash
 brew install coreutils
-brew install gcc@14
+brew install gcc
 brew install git
 brew install lmod
 brew install wget
@@ -148,7 +148,8 @@ repos:
   geosesm: /Users/mathomp4/geosesm-spack/spack_repo/geosesm
 ```
 
-Again, change as needed if you are using the official spack packages.
+Again, change as needed if you are using the official spack packages and, of course, use your username
+in the path (or wherever you cloned the repos to).
 
 ### config
 
@@ -168,7 +169,7 @@ spack compiler find
 For example, I got:
 ```bash
 ❯ spack compiler find
-==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/compilers.yaml
+==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/packages.yaml
     gcc@15.2.0 gcc@14.3.0 gcc@13.3.0 gcc@12.4.0 apple-clang@17.0.0
 ==> Compilers are defined in the following files:
     /Users/mathomp4/.spack/packages.yaml
@@ -181,13 +182,13 @@ how this will look will be:
 packages:
   gcc:
     externals:
-    - spec: gcc@14.3.0 languages:='c,c++,fortran'
+    - spec: gcc@15.2.0 languages:='c,c++,fortran'
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
         compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-14
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-14
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
 ```
 
 ### packages
