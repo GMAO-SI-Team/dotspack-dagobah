@@ -1,6 +1,21 @@
 packages:
+  apple-clang:
+    externals:
+    - spec: apple-clang@17.0.0
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
   gcc:
     externals:
+    - spec: gcc@12.4.0 languages:='c,c++,fortran'
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        compilers:
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-12
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-12
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
     - spec: gcc@13.4.0 languages:='c,c++,fortran'
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
@@ -22,14 +37,6 @@ packages:
           c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
           cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
           fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran
-  apple-clang:
-    externals:
-    - spec: apple-clang@17.0.0
-      prefix: /usr
-      extra_attributes:
-        compilers:
-          c: /usr/bin/clang
-          cxx: /usr/bin/clang++
   llvm:
     externals:
     - spec: llvm@21.1.2 ~clang +flang
@@ -78,6 +85,7 @@ packages:
   openblas:
     prefer:
     - build_system=cmake
+    variants: ~dynamic_dispatch
 
   libpressio:
     variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp

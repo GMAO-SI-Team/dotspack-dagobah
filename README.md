@@ -191,6 +191,42 @@ packages:
           fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
 ```
 
+### toolchains
+
+For simplicity, we'll also setup a toolchain file. An example is:
+```yaml
+
+toolchains:
+  apple-gfortran-15:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=gcc@15"
+    when: "%fortran"
+  apple-nag:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=nag"
+    when: "%fortran"
+```
+
+Now when installing packages, instead of doing:
+
+```bash
+spack install mapl %[virtuals=c,cxx] apple-clang@17.0.0 %[virtuals=fortran] gcc@15.2.0
+```
+
+we can do:
+
+```bash
+spack install mapl %apple-gfortran-15
+```
+
+Much simpler!
+
 ### packages
 
 Now we can use `spack external find` to find the packages we need already in homebrew. But,
@@ -297,48 +333,88 @@ modules:
     - LD_LIBRARY_PATH
 ```
 
+## Spack Environment
 
-## Spack Install
+The best way to manage all the bits needed for GEOSgcm and MAPL is to use a Spack Environment.
 
-Now we install packages.
+In the example below, we'll work on one for GEOSgcm.
 
-```bash
-spack install python py-numpy py-pyyaml py-ruamel-yaml
-spack install openmpi
-spack install esmf
-spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
-spack install mepo
-spack install udunits
-```
+NOTE NOTE NOTE: At the moment, when you deactivate your spack environment, it will screw
+up your shell:
 
-This could just as well be:
-```bash
-spack install --only dependents [geosgcm|mapl]
-```
+https://github.com/spack/spack/issues/48391
 
-### Regenerate Modules
-
-Sometimes spack needs a nudge to generate lmod files. This can be done (at any time) with:
+it removes things like homebrew from your PATH. So, until that is fixed, you might want to
+use the spack environment in a subshell, e.g.,
 
 ```bash
-spack module lmod refresh --delete-tree -y
+zsh
+spack env activate geosgcm-gcc15
+# do stuff
+spack env deactivate
+exit
 ```
 
-### Extra apple-clang module
+or a new terminal window.
 
-Spack is not able to create a modulefile for apple-clang since it is a
-builtin compiler or something. But, we want to have a modulefile for it
-so we can have `FC`, `CC` etc. set in the environment. So we make one. There
-is a copy in the `extra_modulefiles` directory. Copy it to the right place:
+### Create environment
 
 ```bash
-cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sequoia-aarch64/Core/
+spack env create geosgcm-gcc15
 ```
 
-Note that the Spack lmod directory won't be created until you run a first `spack install` command.
+### Activate environment
+
+```bash
+spack env activate geosgcm-gcc15
+```
+
+### Add packages
+
+```bash
+spack add geosgcm %apple-gfortran-15
+```
+
+### Concretize
+
+```bash
+spack concretize -Uf
+```
+
+### Spack Install
+
+Now we install into the environment:
+
+```bash
+spack install --only dependencies
+```
+
+### Fix up the environment for CC/CXX/FC
+
+At the moment, the environment will not have `CC`, `CXX` and `FC` set to *anything* which is
+not what we want. Unfortunately, this is a spack bug:
 
 
-## Building GEOS and MAPL
+For now, you can manually set them by doing:
+
+```bash
+spack config add env_vars:set:CC:$(which clang)
+spack config add env_vars:set:CXX:$(which clang++)
+spack config add env_vars:set:FC:$(which gfortran-15)
+```
+
+NOTE: You probably need to make a new terminal/subshell and reactivate the environment for this to take effect.
+If I find a spack way, I'll update this.
+
+## Not using Spack Environments
+
+### spack install
+
+If you are not using spack environments, you can install GEOSgcm or MAPL by doing:
+
+```bash
+spack install geosgcm %apple-gfortran-15
+```
 
 ### spack load
 
