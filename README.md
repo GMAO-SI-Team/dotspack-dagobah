@@ -40,6 +40,16 @@ brew install rust
 NOTE 1: The install of gcc will be slow as they are built from source since we are using a non-standard location for homebrew.
 NOTE 2: Yes, `rust` is there. Some Python projects need it
 
+#### gawk from Homebrew
+
+There is currently an issue between `gawk` from Homebrew and spack building `ncurses`. The issue
+is it doesn't build `ncurses` which is a dependency of something in the chain. The workaround
+is to *not* have `gawk` from Homebrew. So just to be safe:
+
+```bash
+brew uninstall gawk
+```
+
 ### .zshenv
 
 Add to .zshenv:
@@ -371,8 +381,18 @@ spack env activate geosgcm-gcc15
 
 ### Add packages
 
+#### GEOSgcm
+
 ```bash
 spack add geosgcm %apple-gfortran-15
+```
+
+#### GEOSgcm Dependencies
+
+If you only want to install the dependencies of GEOSgcm, you can do:
+
+```bash
+spack add geosgcm-deps %apple-gfortran-15
 ```
 
 ### Concretize
@@ -386,7 +406,7 @@ spack concretize -Uf
 Now we install into the environment:
 
 ```bash
-spack install --only dependencies
+spack install
 ```
 
 ### Fix up the environment for CC/CXX/FC
@@ -410,7 +430,7 @@ If I find a spack way, I'll update this.
 
 ### spack install
 
-If you are not using spack environments, you can install GEOSgcm or MAPL by doing:
+If you are not using spack environments, you can install GEOSgcm (or whatever) directly with:
 
 ```bash
 spack install geosgcm %apple-gfortran-15
@@ -421,8 +441,10 @@ spack install geosgcm %apple-gfortran-15
 If you do `spack load` you need to do:
 
 ```bash
-spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo udunits
+spack load geosgcm-deps
 ```
+
+This is true even if you installed `geosgcm` as `geosgcm-deps` is a dependency of `geosgcm`.
 
 ### Loading lmodules
 
