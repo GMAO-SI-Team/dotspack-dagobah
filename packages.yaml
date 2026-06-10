@@ -1,7 +1,7 @@
 packages:
   apple-clang:
     externals:
-    - spec: apple-clang@17.0.0
+    - spec: apple-clang@21.0.0
       prefix: /usr
       extra_attributes:
         compilers:
@@ -9,7 +9,7 @@ packages:
           cxx: /usr/bin/clang++
   gcc:
     externals:
-    - spec: gcc@12.4.0 languages:='c,c++,fortran'
+    - spec: gcc@12.5.0 languages:='c,c++,fortran'
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
         compilers:
@@ -39,7 +39,7 @@ packages:
           fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran
   llvm:
     externals:
-    - spec: llvm@21.1.2 ~clang +flang
+    - spec: llvm@22.1.7 ~clang +flang
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
         compilers:
@@ -108,7 +108,7 @@ packages:
       prefix: /Users/mathomp4/.homebrew/brew
   cmake:
     externals:
-    - spec: cmake@4.1.1
+    - spec: cmake@4.3.3
       prefix: /Users/mathomp4/.homebrew/brew
   cvs:
     externals:
@@ -155,6 +155,12 @@ packages:
   openssh:
     externals:
     - spec: openssh@9.9p2
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.42.2~cpanm+opcode+open+shared+threads
+      prefix: /Users/mathomp4/.homebrew/brew
+    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
       prefix: /usr
   pkgconf:
     externals:

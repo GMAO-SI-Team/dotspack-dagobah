@@ -180,7 +180,7 @@ For example, I got:
 ```bash
 ❯ spack compiler find
 ==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/packages.yaml
-    gcc@15.2.0 gcc@14.3.0 gcc@13.3.0 gcc@12.4.0 apple-clang@17.0.0
+    gcc@15.2.0 gcc@14.3.0 gcc@13.3.0 gcc@12.5.0 apple-clang@21.0.0
 ==> Compilers are defined in the following files:
     /Users/mathomp4/.spack/packages.yaml
 ```
