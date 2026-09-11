@@ -1,6 +1,6 @@
-# dotspack for Dagobah
+# dotspack for Home
 
-This is a collection of .spack files for dagobah
+This is a collection of .spack files for home
 
 ## Homebrew
 
@@ -154,8 +154,8 @@ Finally, we need to tell spack where to find the package repositories. This is d
 repos:
   builtin:
     git: git@github.com:mathomp4/spack-packages.git
-    destination: /Users/mathomp4/spack-packages-mathomp4
-  geosesm: /Users/mathomp4/geosesm-spack/spack_repo/geosesm
+    destination: /Users/fortran/spack-packages-mathomp4
+  geosesm: /Users/fortran/geosesm-spack/spack_repo/geosesm
 ```
 
 Again, change as needed if you are using the official spack packages and, of course, use your username
@@ -179,26 +179,24 @@ spack compiler find
 For example, I got:
 ```bash
 ❯ spack compiler find
-==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/packages.yaml
-    gcc@15.2.0 gcc@14.3.0 gcc@13.3.0 gcc@12.5.0 apple-clang@21.0.0
+==> Added 4 new compilers to /Users/fortran/.spack/darwin/compilers.yaml
+    gcc@16.2.0 gcc@15.2.0 gcc@13.3.0 gcc@12.5.0 apple-clang@21.0.0
 ==> Compilers are defined in the following files:
-    /Users/mathomp4/.spack/packages.yaml
+    /Users/fortran/.spack/packages.yaml
 ```
 
 Note that in Spack 1.0.0 and later, the compilers.yaml file is not used. Instead, the compilers are
 added to the `packages.yaml` file. So, you can ignore the compilers.yaml file. An example of
 how this will look will be:
 ```yaml
-packages:
-  gcc:
-    externals:
+  packages:
     - spec: gcc@16.2.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
+      prefix: /opt/homebrew
       extra_attributes:
         compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-16
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-16
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-16
+          c: /opt/homebrew/bin/gcc-16
+          cxx: /opt/homebrew/bin/g++-16
+          fortran: /opt/homebrew/bin/gfortran-16
 ```
 
 ### toolchains
@@ -256,7 +254,7 @@ For some reason, `tcsh` is not found by `spack external find`. So we add it manu
   tcsh:
     externals:
     - spec: tcsh@6.24.16
-      prefix: /Users/mathomp4/.homebrew/brew
+      prefix: /opt/homebrew
 ```
 
 #### Additional settings
@@ -273,6 +271,10 @@ packages:
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
+  esmf:
+    require:
+    - spec: +debug
+      when: platform=darwin
   mapl:
     variants: +pfunit
   netcdf-c:
@@ -347,7 +349,7 @@ use the spack environment in a subshell, e.g.,
 
 ```bash
 zsh
-spack env activate geosgcm-gcc15
+spack env activate geosgcm-gcc16
 # do stuff
 spack env deactivate
 exit
@@ -358,13 +360,13 @@ or a new terminal window.
 ### Create environment
 
 ```bash
-spack env create geosgcm-gcc15
+spack env create geosgcm-gcc16
 ```
 
 ### Activate environment
 
 ```bash
-spack env activate geosgcm-gcc15
+spack env activate geosgcm-gcc16
 ```
 
 ### Add packages
@@ -412,6 +414,28 @@ spack config add env_vars:set:FC:$(which gfortran-16)
 
 NOTE: You probably need to make a new terminal/subshell and reactivate the environment for this to take effect.
 If I find a spack way, I'll update this.
+
+### Apple Silicon: hwloc OpenCL / Metal Crash (`SIGILL: Illegal instruction: 4`)
+
+On macOS Apple Silicon, Open MPI's internal `hwloc` topology discovery compiles an OpenCL plugin (`hwloc_opencl.so`). During `MPI_Init()`, `hwloc` queries Apple's OpenCL framework to discover GPU devices. On Apple Silicon, Apple's OpenCL routes queries through Metal (`MTLCopyAllDevices`), which triggers an illegal instruction crash in the GPU driver (`AGXMetalG15G_C0`) resulting in:
+
+```text
+prterun noticed that process rank X exited on signal 4 (Illegal instruction: 4).
+```
+
+To prevent this crash, `hwloc` must be instructed to skip OpenCL probing via:
+
+```bash
+export HWLOC_COMPONENTS="-opencl"
+```
+
+This is permanently configured across our environments via `~/.spack/env_vars.yaml`:
+
+```yaml
+env_vars:
+  set:
+    HWLOC_COMPONENTS: "-opencl"
+```
 
 > [!WARNING]
 > **Do NOT run `spack load geosgcm-deps` when using Spack Environments!**
@@ -483,7 +507,7 @@ and add:
 
 ```csh
 source $LMOD_PKG/init/csh
-module use -a $SPACK_ROOT/share/spack/lmod/darwin-sequoia-aarch64/Core
+module use -a $SPACK_ROOT/share/spack/lmod/darwin-tahoe-aarch64/Core
 module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 module list
 setenv DYLD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${GEOSDIR}/lib
