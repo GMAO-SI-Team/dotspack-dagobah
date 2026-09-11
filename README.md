@@ -192,13 +192,13 @@ how this will look will be:
 packages:
   gcc:
     externals:
-    - spec: gcc@15.2.0 languages:='c,c++,fortran'
+    - spec: gcc@16.2.0 languages:='c,c++,fortran'
       prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
         compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-16
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-16
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-16
 ```
 
 ### toolchains
@@ -207,12 +207,12 @@ For simplicity, we'll also setup a toolchain file. An example is:
 ```yaml
 
 toolchains:
-  apple-gfortran-15:
+  apple-gfortran-16:
   - spec: "%c=apple-clang"
     when: "%c"
   - spec: "%cxx=apple-clang"
     when: "%cxx"
-  - spec: "%fortran=gcc@15"
+  - spec: "%fortran=gcc@16"
     when: "%fortran"
   apple-nag:
   - spec: "%c=apple-clang"
@@ -226,13 +226,13 @@ toolchains:
 Now when installing packages, instead of doing:
 
 ```bash
-spack install mapl %[virtuals=c,cxx] apple-clang@17.0.0 %[virtuals=fortran] gcc@15.2.0
+spack install mapl %[virtuals=c,cxx] apple-clang@21.0.0 %[virtuals=fortran] gcc@16.2.0
 ```
 
 we can do:
 
 ```bash
-spack install mapl %apple-gfortran-15
+spack install mapl %apple-gfortran-16
 ```
 
 Much simpler!
@@ -270,25 +270,13 @@ packages:
       mpi: [openmpi]
       blas: [openblas]
       lapack: [openblas]
-  hdf5:
-    variants: +fortran +szip +hl +threadsafe +mpi
-    # Note that cdo requires threadsafe, but hdf5 doesn't
-    # seem to want that with parallel. Hmm.
-  netcdf-c:
-    variants: ~hdf4 +dap
-  esmf:
-    variants: ~pnetcdf ~xerces
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
-  pflogger:
-    variants: +mpi
-  pfunit:
-    variants: +mpi +fhamcrest
-  fms:
-    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit
+    variants: +pfunit
+  netcdf-c:
+    variants: +dap
 ```
 
 These are based on how we expect libraries to be built for GEOS and MAPL.
@@ -317,7 +305,7 @@ modules:
     - lmod
     lmod:
       core_compilers:
-      - apple-clang@17.0.0
+      - apple-clang@21.0.0
       hierarchy:
       - mpi
       hash_length: 0
@@ -384,7 +372,7 @@ spack env activate geosgcm-gcc15
 #### GEOSgcm
 
 ```bash
-spack add geosgcm %apple-gfortran-15
+spack add geosgcm %apple-gfortran-16
 ```
 
 #### GEOSgcm Dependencies
@@ -392,7 +380,7 @@ spack add geosgcm %apple-gfortran-15
 If you only want to install the dependencies of GEOSgcm, you can do:
 
 ```bash
-spack add geosgcm-deps %apple-gfortran-15
+spack add geosgcm-deps %apple-gfortran-16
 ```
 
 ### Concretize
@@ -412,19 +400,22 @@ spack install
 ### Fix up the environment for CC/CXX/FC
 
 At the moment, the environment will not have `CC`, `CXX` and `FC` set to *anything* which is
-not what we want. Unfortunately, this is a spack bug:
-
+not what we want. Unfortunately, this is a spack bug ([spack/spack#51855](https://github.com/spack/spack/issues/51855)).
 
 For now, you can manually set them by doing:
 
 ```bash
 spack config add env_vars:set:CC:$(which clang)
 spack config add env_vars:set:CXX:$(which clang++)
-spack config add env_vars:set:FC:$(which gfortran-15)
+spack config add env_vars:set:FC:$(which gfortran-16)
 ```
 
 NOTE: You probably need to make a new terminal/subshell and reactivate the environment for this to take effect.
 If I find a spack way, I'll update this.
+
+> [!WARNING]
+> **Do NOT run `spack load geosgcm-deps` when using Spack Environments!**
+> When using Spack Environments (`spack env activate`), the environment view automatically symlinks all binaries (`mpifort`, `mpicc`, `nc-config`, etc.) into `.spack-env/view/bin` and prepends it to `$PATH`. Running `spack load` inside an active environment can disrupt `$PATH` and fails to load link dependencies like Open MPI.
 
 ## Not using Spack Environments
 
@@ -433,7 +424,7 @@ If I find a spack way, I'll update this.
 If you are not using spack environments, you can install GEOSgcm (or whatever) directly with:
 
 ```bash
-spack install geosgcm %apple-gfortran-15
+spack install geosgcm %apple-gfortran-16
 ```
 
 ### spack load
@@ -467,7 +458,7 @@ cmake --build build --target install -j 6
 
 NOTE: If you used `spack load` you'll need to supply the compilers to the first command:
 ```
-cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-14 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-16 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 ```
 as `spack load` does not populate `FC`, `CC` and `CXX`.
 

@@ -1,4 +1,10 @@
 packages:
+  all:
+    providers:
+      mpi: [openmpi]
+      blas: [openblas]
+      lapack: [openblas]
+
   apple-clang:
     externals:
     - spec: apple-clang@21.0.0
@@ -7,190 +13,238 @@ packages:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
-  gcc:
-    externals:
-    - spec: gcc@12.5.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-12
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-12
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-12
-    - spec: gcc@13.4.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-13
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-13
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-13
-    - spec: gcc@14.3.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-14
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-14
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-14
-    - spec: gcc@15.2.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran
-  llvm:
-    externals:
-    - spec: llvm@22.1.7 ~clang +flang
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        compilers:
-          fortran: /Users/mathomp4/.homebrew/brew/bin/flang
-  nag:
-    externals:
-    - spec: nag@7.2.7236
-      prefix: /Users/mathomp4/installed/Core/nag/7.2.36
-      extra_attributes:
-        compilers:
-          fortran: /Users/mathomp4/installed/Core/nag/7.2.36/bin/nagfor
 
-  all:
-    providers:
-      mpi: [openmpi]
-      blas: [openblas]
-      lapack: [openblas]
-  hdf5:
-    variants: +fortran +szip +hl +threadsafe +mpi
-    # Note that cdo requires threadsafe, but hdf5 doesn't
-    # seem to want that with parallel. Hmm.
-  netcdf-c:
-    variants: ~hdf4 +dap
-  esmf:
-    variants: ~pnetcdf ~xerces
+  autoconf:
+    externals:
+    - spec: autoconf@2.73
+      prefix: /opt/homebrew
+
+  automake:
+    externals:
+    - spec: automake@1.18.1
+      prefix: /opt/homebrew
+
+  bash:
+    externals:
+    - spec: bash@5.3.15
+      prefix: /opt/homebrew
+
+  bison:
+    externals:
+    - spec: bison@2.3
+      prefix: /usr
+
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
-  pflogger:
-    variants: +mpi
-  pfunit:
-    variants: +mpi +fhamcrest
-  fms:
-    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
+
+  cmake:
+    externals:
+    - spec: cmake@4.4.3
+      prefix: /opt/homebrew
+
+  cvs:
+    externals:
+    - spec: cvs@1.12.13
+      prefix: /opt/homebrew
+
+  diffutils:
+    externals:
+    - spec: diffutils@3.12
+      prefix: /opt/homebrew
+
+  esmf:
+    require:
+    - spec: +debug
+      when: platform=darwin
+
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+
+  gcc:
+    externals:
+    - spec: gcc@12.5.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-12
+          cxx: /opt/homebrew/bin/g++-12
+          fortran: /opt/homebrew/bin/gfortran-12
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-13
+          cxx: /opt/homebrew/bin/g++-13
+          fortran: /opt/homebrew/bin/gfortran-13
+    - spec: gcc@14.4.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-14
+          cxx: /opt/homebrew/bin/g++-14
+          fortran: /opt/homebrew/bin/gfortran-14
+    - spec: gcc@15.3.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-15
+          cxx: /opt/homebrew/bin/g++-15
+          fortran: /opt/homebrew/bin/gfortran-15
+    - spec: gcc@16.2.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-16
+          cxx: /opt/homebrew/bin/g++-16
+          fortran: /opt/homebrew/bin/gfortran-16
+
+  gettext:
+    externals:
+    - spec: gettext@1.0
+      prefix: /opt/homebrew
+
+  git:
+    externals:
+    - spec: git@2.55.0~tcltk
+      prefix: /opt/homebrew
+    - spec: git@2.50.1~tcltk
+      prefix: /usr
+
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.8.0
+      prefix: /opt/homebrew
+
+  go:
+    externals:
+    - spec: go@1.27.1
+      prefix: /opt/homebrew
+
+  graphviz:
+    externals:
+    - spec: graphviz@16.0.0
+      prefix: /opt/homebrew
+
+  groff:
+    externals:
+    - spec: groff@1.24.1
+      prefix: /opt/homebrew
+
+  libpressio:
+    variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
+
+  libpressio-tools:
+    variants: +hdf5 +mpi +sperr
+
+  libtool:
+    externals:
+    - spec: libtool@2.6.2
+      prefix: /opt/homebrew
+
+  llvm:
+    externals:
+    - spec: llvm@23.1.1 ~clang +flang
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          fortran: /opt/homebrew/bin/flang
+
+  m4:
+    externals:
+    - spec: m4@1.4.6
+      prefix: /usr
+
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit
-  sz3:
-    variants: +hdf5
-  openmpi:
-    # Note: NAG has a bug with Open MPI 5.0.8
-    require: '@5.0.7'
-    variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
+    variants: +pfunit
+
+  netcdf-c:
+    variants: +dap
+
+  ninja:
+    externals:
+    - spec: ninja@1.13.2
+      prefix: /opt/homebrew
+
+  npm:
+    externals:
+    - spec: npm@11.19.1
+      prefix: /opt/homebrew
+
   openblas:
     prefer:
     - build_system=cmake
     variants: ~dynamic_dispatch
 
-  libpressio:
-    variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
-  libpressio-tools:
-    variants: +hdf5 +mpi +sperr
+  openmpi:
+    # Note: NAG has a bug with Open MPI >= 5.0.8
+    require:
+    - spec: '@5.0.7'
+      when: '%nag'
+    variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
+
+  openssh:
+    externals:
+    - spec: openssh@10.3p1
+      prefix: /usr
+
+  openssl:
+    externals:
+    - spec: openssl@3.6.4
+      prefix: /opt/homebrew
+
+  perl:
+    externals:
+    - spec: perl@5.44.0~cpanm+opcode+open+shared+threads
+      prefix: /opt/homebrew
+    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
+      prefix: /usr
+
+  pkgconf:
+    externals:
+    - spec: pkgconf@3.0.7
+      prefix: /opt/homebrew
+
+  python:
+    externals:
+    - spec: python@3.14.7+bz2+ctypes+dbm~freethreading+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib+zstd
+      prefix: /opt/homebrew
+    - spec: python@3.9.6+bz2+crypt+ctypes+dbm+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /usr
+
+  rust:
+    externals:
+    - spec: rust@1.98.1
+      prefix: /opt/homebrew
+      extra_attributes:
+        cargo: /opt/homebrew/bin/cargo
+        compilers:
+          rust: /opt/homebrew/bin/rustc
+
   sperr:
     variants: ~openmp
 
-  autoconf:
-    externals:
-    - spec: autoconf@2.72
-      prefix: /Users/mathomp4/.homebrew/brew
-  automake:
-    externals:
-    - spec: automake@1.18.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  bash:
-    externals:
-    - spec: bash@5.3.3
-      prefix: /Users/mathomp4/.homebrew/brew
-  cmake:
-    externals:
-    - spec: cmake@4.3.3
-      prefix: /Users/mathomp4/.homebrew/brew
-  cvs:
-    externals:
-    - spec: cvs@1.12.13
-      prefix: /Users/mathomp4/.homebrew/brew
-  doxygen:
-    externals:
-    - spec: doxygen@1.14.0+graphviz~mscgen
-      prefix: /Users/mathomp4/.homebrew/brew
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
-  gawk:
-    externals:
-    - spec: gawk@5.3.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  git:
-    externals:
-    - spec: git@2.51.0+tcltk
-      prefix: /Users/mathomp4/.homebrew/brew
-    - spec: git@2.50.1~tcltk
-      prefix: /usr
-  git-lfs:
-    externals:
-    - spec: git-lfs@3.7.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  groff:
-    externals:
-    - spec: groff@1.23.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  libtool:
-    externals:
-    - spec: libtool@2.5.4
-      prefix: /Users/mathomp4/.homebrew/brew
-  ninja:
-    externals:
-    - spec: ninja@1.13.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  npm:
-    externals:
-    - spec: npm@11.6.0
-      prefix: /Users/mathomp4/.homebrew/brew
-  openssh:
-    externals:
-    - spec: openssh@9.9p2
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.42.2~cpanm+opcode+open+shared+threads
-      prefix: /Users/mathomp4/.homebrew/brew
-    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
-      prefix: /usr
-  pkgconf:
-    externals:
-    - spec: pkgconf@2.5.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  rust:
-    externals:
-    - spec: rust@1.90.0
-      prefix: /Users/mathomp4/.homebrew/brew
-      extra_attributes:
-        cargo: /Users/mathomp4/.homebrew/brew/bin/cargo
-        compilers:
-          rust: /Users/mathomp4/.homebrew/brew/bin/rustc
   subversion:
     externals:
     - spec: subversion@1.14.5
-      prefix: /Users/mathomp4/.homebrew/brew
-  swig:
-    externals:
-    - spec: swig@4.3.1
-      prefix: /Users/mathomp4/.homebrew/brew
-  tar:
-    externals:
-    - spec: tar@1.35
-      prefix: /Users/mathomp4
+      prefix: /opt/homebrew
+
+  sz3:
+    variants: +hdf5
+
   tcsh:
     externals:
     - spec: tcsh@6.24.16
-      prefix: /Users/mathomp4/.homebrew/brew
+      prefix: /opt/homebrew
+
   texinfo:
     externals:
-    - spec: texinfo@7.2
-      prefix: /Users/mathomp4/.homebrew/brew
+    - spec: texinfo@5.2
+      prefix: /usr/local
+
+  typescript:
+    externals:
+    - spec: typescript@7.0.2
+      prefix: /opt/homebrew
