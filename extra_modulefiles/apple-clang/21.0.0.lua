@@ -16,7 +16,7 @@ help([[Apple's Clang compiler]])
 family("compiler")
 
 -- Loading this module unlocks the path below unconditionally
-prepend_path("MODULEPATH", "/Users/mathomp4/spack/share/spack/lmod/darwin-sequoia-aarch64/Core")
+prepend_path("MODULEPATH", pathJoin(os.getenv("SPACK_ROOT"), "share/spack/lmod/darwin-sequoia-aarch64/Core"))
 
 -- set the compiler environment variables
 setenv("CC","/usr/bin/clang")
@@ -28,4 +28,3 @@ setenv("F90",pathJoin(homebrewdir, "bin/gfortran-16"))
 
 -- per scivision, set OpenMP_ROOT for clang: https://gist.github.com/scivision/16c2ca1dc250f54d34f1a1a35596f4a0
 setenv("OpenMP_ROOT",pathJoin(homebrewdir, "opt/libomp"))
-

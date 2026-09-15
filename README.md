@@ -17,7 +17,7 @@ git clone https://github.com/Homebrew/brew $HOME/.homebrew
 Then:
 
 ```bash
-eval "$(homebrew/bin/brew shellenv)"
+eval "$($HOME/.homebrew/brew/bin/brew shellenv)"
 brew update --force --quiet
 chmod -R go-w "$(brew --prefix)/share/zsh"
 ```
@@ -154,8 +154,8 @@ Finally, we need to tell spack where to find the package repositories. This is d
 repos:
   builtin:
     git: git@github.com:mathomp4/spack-packages.git
-    destination: /Users/fortran/spack-packages-mathomp4
-  geosesm: /Users/fortran/geosesm-spack/spack_repo/geosesm
+    destination: /Users/mathomp4/spack-packages-mathomp4
+  geosesm: /Users/mathomp4/geosesm-spack/spack_repo/geosesm
 ```
 
 Again, change as needed if you are using the official spack packages and, of course, use your username
@@ -179,10 +179,10 @@ spack compiler find
 For example, I got:
 ```bash
 ❯ spack compiler find
-==> Added 4 new compilers to /Users/fortran/.spack/darwin/compilers.yaml
+==> Added 4 new compilers to /Users/mathomp4/.spack/darwin/compilers.yaml
     gcc@16.2.0 gcc@15.2.0 gcc@13.3.0 gcc@12.5.0 apple-clang@21.0.0
 ==> Compilers are defined in the following files:
-    /Users/fortran/.spack/packages.yaml
+    /Users/mathomp4/.spack/packages.yaml
 ```
 
 Note that in Spack 1.0.0 and later, the compilers.yaml file is not used. Instead, the compilers are
@@ -191,12 +191,12 @@ how this will look will be:
 ```yaml
   packages:
     - spec: gcc@16.2.0 languages:='c,c++,fortran'
-      prefix: /opt/homebrew
+      prefix: /Users/mathomp4/.homebrew/brew
       extra_attributes:
         compilers:
-          c: /opt/homebrew/bin/gcc-16
-          cxx: /opt/homebrew/bin/g++-16
-          fortran: /opt/homebrew/bin/gfortran-16
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-16
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-16
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-16
 ```
 
 ### toolchains
@@ -254,7 +254,7 @@ For some reason, `tcsh` is not found by `spack external find`. So we add it manu
   tcsh:
     externals:
     - spec: tcsh@6.24.16
-      prefix: /opt/homebrew
+      prefix: /Users/mathomp4/.homebrew/brew
 ```
 
 #### Additional settings
